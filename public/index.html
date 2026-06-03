@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marvão — Cadastro de Onboarding 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mv-green: #1a3d2b;
+  --mv-green-mid: #2a5c40;
+  --mv-green-light: #3a7a56;
+  --mv-gold: #c9a84c;
+  --mv-gold-light: #e8c97a;
+  --mv-gold-pale: #f5e9c8;
+  --mv-cream: #faf8f3;
+  --mv-white: #ffffff;
+  --mv-border: rgba(26,61,43,0.18);
+  --mv-text: #1a3d2b;
+  --mv-text-muted: #4a6658;
+  --disc-d: #c0392b; --disc-d-bg: #fdf0ef; --disc-d-border: #e8a8a4;
+  --disc-i: #c9a84c; --disc-i-bg: #fdf6e3; --disc-i-border: #e8d4a0;
+  --disc-s: #1a7a46; --disc-s-bg: #eaf7ef; --disc-s-border: #a0d4b8;
+  --disc-c: #185fa5; --disc-c-bg: #eaf1fb; --disc-c-border: #a0bfe8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f0ede6;color:var(--mv-text);min-height:100vh}
+
+/* NAV TABS */
+.tab-nav{background:var(--mv-green);display:flex;border-bottom:2px solid var(--mv-gold)}
+.tab-btn{padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.6);background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;letter-spacing:0.03em}
+.tab-btn.active{color:var(--mv-white);border-bottom-color:var(--mv-gold)}
+.tab-btn:hover{color:var(--mv-white)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* LAYOUT */
+.page{max-width:700px;margin:0 auto;padding:0 0 3rem}
+.header{background:var(--mv-green);padding:2rem 2.5rem 1.8rem;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:0;right:0;bottom:0;width:6px;background:var(--mv-gold)}
+.header-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.18em;color:var(--mv-gold-light);text-transform:uppercase;margin-bottom:.5rem}
+.header-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:600;color:var(--mv-white);line-height:1.25;margin-bottom:.3rem}
+.header-sub{font-size:13px;color:rgba(255,255,255,0.6);font-weight:300}
+.header-rule{width:40px;height:2px;background:var(--mv-gold);margin:.8rem 0 0}
+
+/* PROGRESS */
+.prog-wrap{background:var(--mv-green-mid);padding:.6rem 2.5rem;display:flex;align-items:center;gap:10px}
+.prog-track{flex:1;height:3px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--mv-gold);border-radius:2px;transition:width .4s ease}
+.prog-label{font-size:11px;color:rgba(255,255,255,0.7);font-weight:500;white-space:nowrap}
+
+/* STEP INDICATOR */
+.steps{display:flex;align-items:center;padding:1.25rem 2rem .5rem;gap:0}
+.step-item{display:flex;align-items:center;gap:6px;flex:1}
+.step-dot{width:26px;height:26px;border-radius:50%;background:rgba(26,61,43,0.12);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--mv-text-muted);flex-shrink:0;transition:all .3s;border:2px solid transparent}
+.step-dot.active{background:var(--mv-green);color:#fff;border-color:var(--mv-green)}
+.step-dot.done{background:var(--mv-gold-pale);color:var(--mv-gold);border-color:var(--mv-gold)}
+.step-label{font-size:11px;color:var(--mv-text-muted);font-weight:500;white-space:nowrap}
+.step-label.active{color:var(--mv-green);font-weight:600}
+.step-connector{flex:1;height:1px;background:rgba(26,61,43,0.15);margin:0 6px}
+
+/* SECTIONS */
+.form-section{margin:1.2rem 2rem 0;background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:10px;overflow:hidden}
+.sec-hdr{background:var(--mv-green);padding:.65rem 1.25rem;display:flex;align-items:center;gap:10px}
+.sec-num{width:22px;height:22px;border-radius:50%;background:var(--mv-gold);color:var(--mv-green);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-title{font-size:13px;font-weight:500;color:var(--mv-white);letter-spacing:.03em}
+.sec-body{padding:1.2rem 1.25rem 1rem}
+
+/* FIELDS */
+.field{margin-bottom:1rem}
+.field:last-child{margin-bottom:0}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+label.fl{display:block;font-size:12px;font-weight:600;color:var(--mv-text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+label.fl .req{color:var(--mv-gold);margin-left:2px}
+input[type=text],input[type=email],input[type=tel],select,textarea{width:100%;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--mv-text);background:var(--mv-cream);border:1px solid var(--mv-border);border-radius:6px;outline:none;transition:border-color .2s,background .2s;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--mv-green-light);background:#fff;box-shadow:0 0 0 3px rgba(42,92,64,.08)}
+input.err,select.err{border-color:#c0392b;background:#fdf0ef}
+input.ok{border-color:#4a9e6a;background:#eaf7ef}
+.err-msg{font-size:11px;color:#c0392b;margin-top:4px;display:none}
+.hint{font-size:11.5px;color:var(--mv-text-muted);margin-top:4px;line-height:1.5}
+
+/* PHOTO */
+.photo-area{border:2px dashed var(--mv-border);border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:var(--mv-cream)}
+.photo-area:hover{border-color:var(--mv-green-light);background:#f0f7f3}
+.photo-area.has-photo{border-style:solid;border-color:var(--mv-green)}
+.photo-preview{width:90px;height:90px;border-radius:50%;object-fit:cover;object-position:center top;border:3px solid var(--mv-green);margin:0 auto .75rem;display:none}
+.photo-icon{font-size:32px;color:var(--mv-green-light);margin-bottom:.5rem}
+.photo-title{font-size:13px;font-weight:600;color:var(--mv-text);margin-bottom:3px}
+.photo-sub{font-size:11.5px;color:var(--mv-text-muted);line-height:1.5}
+.photo-sub span{color:var(--mv-green);font-weight:500}
+.photo-guide{margin-top:10px;background:#eaf7ef;border-radius:6px;padding:8px 12px;text-align:left}
+.photo-guide-row{display:flex;align-items:flex-start;gap:6px;font-size:11.5px;color:#1a5c34;line-height:1.4;margin-bottom:4px}
+.photo-guide-row:last-child{margin-bottom:0}
+input[type=file]{display:none}
+.photo-actions{display:flex;gap:8px;justify-content:center;margin-top:.75rem}
+
+/* BUTTONS */
+.btn-sm{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:6px 14px;border-radius:5px;border:1px solid var(--mv-border);cursor:pointer;background:var(--mv-white);color:var(--mv-text);transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+.btn-sm:hover{background:var(--mv-cream);border-color:var(--mv-green)}
+.btn-sm.gold{background:var(--mv-green);color:#fff;border-color:var(--mv-green)}
+.btn-sm.gold:hover{background:var(--mv-green-mid)}
+.btn-nav{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;letter-spacing:.03em;padding:13px 28px;border-radius:8px;border:none;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.btn-nav.next{background:var(--mv-green);color:#fff}
+.btn-nav.next::after{content:'';position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--mv-gold)}
+.btn-nav.next:hover{background:var(--mv-green-mid);transform:translateY(-1px)}
+.btn-nav.back{background:transparent;color:var(--mv-text-muted);border:1px solid var(--mv-border)}
+.btn-nav.back:hover{background:var(--mv-cream)}
+.btn-nav:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.nav-row{margin:1.5rem 2rem 0;display:flex;gap:10px;align-items:center}
+.nav-row .spacer{flex:1}
+
+/* ALERT */
+.alert-box{margin:1.2rem 2rem 0;background:var(--mv-gold-pale);border:1px solid rgba(201,168,76,.4);border-left:4px solid var(--mv-gold);border-radius:6px;padding:.9rem 1.2rem;display:flex;gap:10px;align-items:flex-start}
+.alert-icon{font-size:17px;color:var(--mv-gold);flex-shrink:0;margin-top:1px}
+.alert-text{font-size:13px;color:#5a4010;line-height:1.55}
+.alert-text strong{font-weight:600}
+
+/* DISC */
+.disc-intro{margin:1.2rem 2rem 0;background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:10px;padding:1.2rem 1.25rem}
+.disc-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.2rem}
+.disc-leg-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;border:1px solid}
+.disc-leg-item.d{background:var(--disc-d-bg);border-color:var(--disc-d-border)}
+.disc-leg-item.i{background:var(--disc-i-bg);border-color:var(--disc-i-border)}
+.disc-leg-item.s{background:var(--disc-s-bg);border-color:var(--disc-s-border)}
+.disc-leg-item.c{background:var(--disc-c-bg);border-color:var(--disc-c-border)}
+.disc-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.disc-dot.d{background:var(--disc-d);color:#fff}
+.disc-dot.i{background:var(--disc-i);color:#fff}
+.disc-dot.s{background:var(--disc-s);color:#fff}
+.disc-dot.c{background:var(--disc-c);color:#fff}
+.disc-leg-text strong{font-size:12px;font-weight:600;display:block}
+.disc-leg-text span{font-size:11px;color:var(--mv-text-muted)}
+
+.disc-q{margin:1.2rem 2rem 0;background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:10px;padding:1.2rem 1.25rem}
+.disc-q-num{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mv-text-muted);margin-bottom:.3rem}
+.disc-q-text{font-size:14px;font-weight:500;color:var(--mv-text);margin-bottom:1rem;line-height:1.5}
+.disc-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.disc-opt{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border:1.5px solid var(--mv-border);border-radius:8px;cursor:pointer;transition:all .2s;background:var(--mv-cream)}
+.disc-opt:hover{border-color:var(--mv-green-light);background:#f5faf7}
+.disc-opt.selected{border-color:var(--mv-green);background:#edf7f1}
+.disc-opt-bullet{width:18px;height:18px;border-radius:50%;border:2px solid rgba(26,61,43,0.25);flex-shrink:0;margin-top:2px;transition:all .2s;background:transparent}
+.disc-opt.selected .disc-opt-bullet{background:var(--mv-green);border-color:var(--mv-green)}
+.disc-opt-text{font-size:13px;color:var(--mv-text);line-height:1.4}
+
+.disc-progress{height:4px;background:rgba(26,61,43,.1);border-radius:2px;margin:1rem 2rem 0;overflow:hidden}
+.disc-prog-fill{height:100%;background:var(--mv-gold);border-radius:2px;transition:width .4s}
+
+/* CONEXÃO */
+.conn-q{margin:1.2rem 2rem 0;background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:10px;padding:1.2rem 1.25rem}
+.conn-q-text{font-size:14px;font-weight:500;color:var(--mv-text);margin-bottom:.6rem;line-height:1.5}
+.conn-q-sub{font-size:12px;color:var(--mv-text-muted);margin-bottom:1rem}
+.scale-row{display:flex;gap:6px;align-items:stretch}
+.scale-btn{flex:1;padding:10px 4px;border:1.5px solid var(--mv-border);border-radius:7px;cursor:pointer;background:var(--mv-cream);text-align:center;font-size:13px;font-weight:600;color:var(--mv-text-muted);transition:all .2s}
+.scale-btn:hover{border-color:var(--mv-green-light);background:#f5faf7}
+.scale-btn.sel{background:var(--mv-green);color:#fff;border-color:var(--mv-green)}
+.scale-labels{display:flex;justify-content:space-between;margin-top:5px;font-size:10.5px;color:var(--mv-text-muted)}
+.open-q{width:100%;min-height:80px;resize:vertical;font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;padding:10px 12px;background:var(--mv-cream);border:1px solid var(--mv-border);border-radius:6px;outline:none;transition:border-color .2s}
+.open-q:focus{border-color:var(--mv-green-light);background:#fff;box-shadow:0 0 0 3px rgba(42,92,64,.08)}
+
+/* LGPD */
+.lgpd-box{margin:1.2rem 2rem 0;background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:10px;overflow:hidden}
+.lgpd-hdr{background:#1e2d4a;padding:.65rem 1.25rem;display:flex;align-items:center;gap:8px}
+.lgpd-hdr span{font-size:12px;font-weight:500;color:#a8bbd0;letter-spacing:.05em;text-transform:uppercase}
+.lgpd-scroll{height:130px;overflow-y:auto;font-size:11.5px;color:var(--mv-text-muted);line-height:1.7;background:var(--mv-cream);border:.5px solid var(--mv-border);border-radius:6px;padding:.75rem 1rem;margin:.9rem 1.25rem .8rem}
+.lgpd-scroll p{margin-bottom:.5rem}
+.lgpd-scroll strong{color:var(--mv-text);font-weight:600}
+.consent-row{display:flex;gap:10px;align-items:flex-start;padding:.6rem .75rem;border-radius:6px;background:rgba(26,61,43,.04);border:1px solid rgba(26,61,43,.1);margin:.5rem 1.25rem;cursor:pointer;transition:background .2s}
+.consent-row:hover{background:rgba(26,61,43,.07)}
+.consent-row input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:var(--mv-green)}
+.consent-row label{font-size:12.5px;color:var(--mv-text);line-height:1.5;cursor:pointer}
+.consent-row label strong{font-weight:600}
+.lgpd-pad{height:.9rem}
+
+/* HIERARQUIA */
+.hier-wrap{position:relative}
+.hier-wrap select{padding-right:32px}
+.chevron{position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--mv-text-muted);font-size:14px}
+.depto-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:8px;transition:all .3s;opacity:0}
+.depto-badge.visible{opacity:1}
+.d-conselho{background:#e8edf5;color:#1a3060}
+.d-diretoria{background:#fef4dc;color:#7a4e08}
+.d-gerencia{background:#e8f5ee;color:#1a5c34}
+.d-coordenacao{background:#f0ecfa;color:#4a2880}
+.d-outro{background:#f0f0ee;color:#555}
+.locked-notice{font-size:12px;color:var(--mv-text-muted);background:rgba(26,61,43,.05);border:1px dashed var(--mv-border);border-radius:6px;padding:8px 12px;display:flex;align-items:center;gap:7px;margin-top:8px}
+
+/* RESULTADO DISC */
+.disc-result-wrap{margin:1.2rem 2rem 0;background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:10px;padding:1.4rem 1.25rem}
+.disc-bars{margin:1rem 0}
+.disc-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.disc-bar-lbl{width:14px;font-size:12px;font-weight:700;flex-shrink:0;text-align:center}
+.disc-bar-lbl.d{color:var(--disc-d)}
+.disc-bar-lbl.i{color:var(--disc-i)}
+.disc-bar-lbl.s{color:var(--disc-s)}
+.disc-bar-lbl.c{color:var(--disc-c)}
+.disc-bar-track{flex:1;height:14px;background:rgba(26,61,43,.08);border-radius:7px;overflow:hidden}
+.disc-bar-fill{height:100%;border-radius:7px;transition:width .8s ease}
+.disc-bar-fill.d{background:var(--disc-d)}
+.disc-bar-fill.i{background:var(--disc-i)}
+.disc-bar-fill.s{background:var(--disc-s)}
+.disc-bar-fill.c{background:var(--disc-c)}
+.disc-bar-pct{font-size:12px;font-weight:600;width:36px;text-align:right;color:var(--mv-text-muted)}
+.disc-dominant{display:flex;align-items:center;gap:10px;padding:12px;border-radius:8px;margin-top:1rem}
+.disc-dominant.d{background:var(--disc-d-bg);border:1px solid var(--disc-d-border)}
+.disc-dominant.i{background:var(--disc-i-bg);border:1px solid var(--disc-i-border)}
+.disc-dominant.s{background:var(--disc-s-bg);border:1px solid var(--disc-s-border)}
+.disc-dominant.c{background:var(--disc-c-bg);border:1px solid var(--disc-c-border)}
+
+/* SUCCESS */
+.success-wrap{margin:1.5rem 2rem;background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:12px;padding:2rem;text-align:center}
+.success-icon{font-size:44px;color:var(--mv-green);margin-bottom:1rem}
+.success-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--mv-green);margin-bottom:.5rem}
+.success-sub{font-size:14px;color:var(--mv-text-muted)}
+.success-card{margin-top:1.5rem;padding:1rem;background:var(--mv-cream);border-radius:8px;text-align:left;font-size:13px}
+
+/* ADMIN PANEL */
+.admin-wrap{max-width:960px;margin:0 auto;padding:1.5rem 2rem 3rem}
+.admin-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.admin-hdr h1{font-family:'Playfair Display',serif;font-size:22px;color:var(--mv-green)}
+.admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:1.5rem}
+.stat-card{background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:8px;padding:.8rem 1rem;text-align:center}
+.stat-num{font-size:24px;font-weight:600;color:var(--mv-green)}
+.stat-lbl{font-size:11px;color:var(--mv-text-muted);margin-top:2px}
+.filter-bar{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.filter-btn{font-size:12px;font-weight:500;padding:6px 12px;border-radius:20px;border:1.5px solid var(--mv-border);background:var(--mv-white);color:var(--mv-text-muted);cursor:pointer;transition:all .2s}
+.filter-btn.active{background:var(--mv-green);color:#fff;border-color:var(--mv-green)}
+.filter-btn:hover:not(.active){background:var(--mv-cream);border-color:var(--mv-green)}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.respondent-card{background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:10px;overflow:hidden;transition:box-shadow .2s}
+.respondent-card:hover{box-shadow:0 4px 16px rgba(26,61,43,.12)}
+.rc-top{padding:1rem;display:flex;gap:12px;align-items:flex-start}
+.rc-photo{width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:center top;border:2px solid var(--mv-gold);flex-shrink:0}
+.rc-avatar{width:56px;height:56px;border-radius:50%;background:var(--mv-green);color:#fff;font-size:18px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rc-info{flex:1;min-width:0}
+.rc-name{font-size:14px;font-weight:600;color:var(--mv-text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-cargo{font-size:12px;color:var(--mv-text-muted);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-body{padding:.75rem 1rem;border-top:.5px solid rgba(26,61,43,.1)}
+.rc-disc{display:flex;gap:4px;margin-bottom:.5rem;align-items:center}
+.rc-disc-lbl{font-size:10px;color:var(--mv-text-muted);font-weight:500;margin-right:2px}
+.disc-pill{display:inline-flex;align-items:center;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700}
+.disc-pill.d{background:var(--disc-d);color:#fff}
+.disc-pill.i{background:var(--disc-i);color:#fff}
+.disc-pill.s{background:var(--disc-s);color:#fff}
+.disc-pill.c{background:var(--disc-c);color:#fff}
+.rc-conexao{display:flex;gap:4px;margin-bottom:.5rem;align-items:center}
+.rc-conexao-lbl{font-size:10px;color:var(--mv-text-muted);font-weight:500;margin-right:2px}
+.conn-stars{display:flex;gap:2px}
+.conn-star{width:10px;height:10px;border-radius:50%}
+.conn-star.fill{background:var(--mv-gold)}
+.conn-star.empty{background:rgba(26,61,43,.15)}
+.rc-contact{font-size:11px;color:var(--mv-text-muted);display:flex;flex-direction:column;gap:2px}
+.rc-actions{padding:.6rem 1rem;border-top:.5px solid rgba(26,61,43,.1);display:flex;gap:6px}
+.rc-depto-badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:600;text-transform:uppercase;margin-top:4px}
+.empty-state{text-align:center;padding:3rem;color:var(--mv-text-muted)}
+.empty-state-icon{font-size:36px;margin-bottom:.5rem}
+
+.search-input{padding:7px 12px;font-family:'DM Sans',sans-serif;font-size:13px;border:1px solid var(--mv-border);border-radius:6px;outline:none;background:var(--mv-white);color:var(--mv-text);transition:border-color .2s}
+.search-input:focus{border-color:var(--mv-green-light);box-shadow:0 0 0 3px rgba(42,92,64,.08)}
+
+.admin-empty{text-align:center;padding:4rem 2rem;background:var(--mv-white);border:.5px solid var(--mv-border);border-radius:10px}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--mv-white);border-radius:12px;max-width:480px;width:90%;max-height:90vh;overflow-y:auto;padding:1.5rem}
+.modal-close{float:right;background:none;border:none;font-size:18px;cursor:pointer;color:var(--mv-text-muted)}
+.modal h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--mv-green);margin-bottom:1rem}
+.modal-photo{width:120px;height:120px;border-radius:50%;object-fit:cover;object-position:center top;border:3px solid var(--mv-gold);display:block;margin:0 auto 1rem}
+.modal-avatar{width:120px;height:120px;border-radius:50%;background:var(--mv-green);color:#fff;font-size:36px;font-weight:600;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.modal-field{margin-bottom:.75rem}
+.modal-field label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mv-text-muted);display:block;margin-bottom:2px}
+.modal-field .val{font-size:14px;color:var(--mv-text)}
+.disc-bar-mini{height:8px;border-radius:4px;margin-top:3px}
+.disc-bar-mini.d{background:var(--disc-d)}
+.disc-bar-mini.i{background:var(--disc-i)}
+.disc-bar-mini.s{background:var(--disc-s)}
+.disc-bar-mini.c{background:var(--disc-c)}
+
+/* CONN SCORES */
+.conn-score-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:.5rem;font-size:13px}
+.conn-score-bar-wrap{grid-column:1/-1;height:6px;background:rgba(26,61,43,.1);border-radius:3px;overflow:hidden;margin-top:-2px;margin-bottom:4px}
+.conn-score-bar{height:100%;border-radius:3px;background:var(--mv-green);transition:width .6s}
+
+/* FOOTER */
+.footer-bar{margin:2rem 2rem 0;padding-top:1rem;border-top:.5px solid var(--mv-border);display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:'Playfair Display',serif;font-size:13px;color:var(--mv-green);font-weight:600;letter-spacing:.05em}
+.footer-conf{font-size:10px;color:var(--mv-text-muted)}
+
+@media(max-width:520px){
+  .field-row{grid-template-columns:1fr}
+  .disc-opts{grid-template-columns:1fr}
+  .disc-legend{grid-template-columns:1fr}
+  .cards-grid{grid-template-columns:1fr}
+  .admin-wrap{padding:1rem 1rem 3rem}
+}
+
+/* MODAL SENHA ADMIN */
+.auth-overlay{display:none;position:fixed;inset:0;background:rgba(10,24,16,0.72);z-index:2000;align-items:center;justify-content:center}
+.auth-overlay.open{display:flex}
+.auth-box{background:var(--mv-white);border-radius:14px;padding:2rem 2rem 1.75rem;width:340px;max-width:90vw;border-top:4px solid var(--mv-gold)}
+.auth-logo{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--mv-green);letter-spacing:.08em;margin-bottom:.25rem}
+.auth-title{font-size:18px;font-weight:600;color:var(--mv-text);margin-bottom:.3rem}
+.auth-sub{font-size:12.5px;color:var(--mv-text-muted);margin-bottom:1.25rem;line-height:1.5}
+.auth-field{position:relative;margin-bottom:.5rem}
+.auth-input{width:100%;padding:10px 40px 10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--mv-text);background:var(--mv-cream);border:1.5px solid var(--mv-border);border-radius:8px;outline:none;transition:border-color .2s}
+.auth-input:focus{border-color:var(--mv-green-light);background:#fff;box-shadow:0 0 0 3px rgba(42,92,64,.1)}
+.auth-input.auth-err{border-color:#c0392b;background:#fdf0ef}
+.auth-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--mv-text-muted);padding:0;line-height:1}
+.auth-err-msg{font-size:11.5px;color:#c0392b;margin-bottom:.75rem;display:none}
+.auth-btn{width:100%;padding:11px;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;background:var(--mv-green);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:background .2s;position:relative;overflow:hidden}
+.auth-btn::after{content:'';position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--mv-gold)}
+.auth-btn:hover{background:var(--mv-green-mid)}
+.auth-cancel{display:block;text-align:center;margin-top:.75rem;font-size:12px;color:var(--mv-text-muted);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0}
+.auth-cancel:hover{color:var(--mv-text)}
+.auth-attempts{font-size:11px;color:var(--mv-text-muted);text-align:center;margin-top:.5rem}
+</style>
+</head>
+<body>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('form')">Formulário de cadastro</button>
+  <button class="tab-btn" onclick="switchTab('admin')">Painel do administrador</button>
+</div>
+
+<!-- ============ FORMULÁRIO ============ -->
+<div class="tab-panel active" id="tab-form">
+<div class="page">
+
+  <div class="header">
+    <div class="header-eyebrow">Marvão Serviços · Onboarding Junho 2026</div>
+    <div class="header-title">Cadastro de Onboarding</div>
+    <div class="header-sub">Instalação da Nova Estrutura Executiva — 03 de junho de 2026</div>
+    <div class="header-rule"></div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-label" id="prog-label">Etapa 1 de 4</div>
+  </div>
+
+  <!-- STEP INDICATOR -->
+  <div class="steps">
+    <div class="step-item">
+      <div class="step-dot active" id="sd1">1</div>
+      <div class="step-label active" id="sl1">Dados pessoais</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd2">2</div>
+      <div class="step-label" id="sl2">Perfil DISC</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd3">3</div>
+      <div class="step-label" id="sl3">Conexão</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd4">4</div>
+      <div class="step-label" id="sl4">Consentimento</div>
+    </div>
+  </div>
+
+  <!-- ETAPA 1: DADOS PESSOAIS -->
+  <div id="step1">
+
+    <div class="alert-box">
+      <i class="ti ti-alert-circle alert-icon"></i>
+      <div class="alert-text"><strong>Atenção:</strong> revise seus dados antes de avançar. O nome e cargo serão reproduzidos exatamente como digitados no crachá físico.</div>
+    </div>
+
+    <div class="form-section">
+      <div class="sec-hdr"><div class="sec-num">1</div><div class="sec-title">Identificação</div></div>
+      <div class="sec-body">
+        <div class="field-row">
+          <div class="field">
+            <label class="fl" for="nome">Nome completo <span class="req">*</span></label>
+            <input type="text" id="nome" placeholder="Como deve aparecer no crachá" oninput="onNomeInput(this)">
+            <div class="err-msg" id="err-nome">Campo obrigatório.</div>
+          </div>
+          <div class="field">
+            <label class="fl" for="cpf">CPF <span class="req">*</span></label>
+            <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)">
+            <div class="err-msg" id="err-cpf">CPF inválido.</div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="fl" for="email">E-mail profissional <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="seu@marvao.com.br" onblur="validateEmail()">
+            <div class="err-msg" id="err-email">E-mail inválido.</div>
+          </div>
+          <div class="field">
+            <label class="fl" for="tel">Telefone / WhatsApp <span class="req">*</span></label>
+            <input type="tel" id="tel" placeholder="(00) 00000-0000" maxlength="15" oninput="maskTel(this)">
+            <div class="err-msg" id="err-tel">Campo obrigatório.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="sec-hdr"><div class="sec-num">2</div><div class="sec-title">Cargo e hierarquia</div></div>
+      <div class="sec-body">
+        <div class="field">
+          <label class="fl" for="cargo">Cargo (como aparece no crachá) <span class="req">*</span></label>
+          <input type="text" id="cargo" placeholder="Ex.: Gerente de Logística">
+          <div class="err-msg" id="err-cargo">Campo obrigatório.</div>
+        </div>
+        <div class="field">
+          <label class="fl" for="hierarquia">Posição hierárquica <span class="req">*</span></label>
+          <div class="hier-wrap">
+            <select id="hierarquia" onchange="onHierChange()">
+              <option value="">— Selecione —</option>
+              <option value="conselho" id="opt-conselho" disabled>Conselho Deliberativo</option>
+              <option value="diretoria" id="opt-diretoria" disabled>Diretoria Executiva</option>
+              <option value="gerencia">Gerência</option>
+              <option value="coordenacao">Coordenação</option>
+              <option value="outro">Outro</option>
+            </select>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="err-msg" id="err-hier">Selecione a posição.</div>
+          <div id="locked-notice" class="locked-notice" style="display:none">
+            <i class="ti ti-lock" style="font-size:14px"></i>
+            As opções Conselho e Diretoria são habilitadas automaticamente pelo sistema conforme o nome informado.
+          </div>
+          <div class="depto-badge" id="depto-badge"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="sec-hdr"><div class="sec-num">3</div><div class="sec-title">Foto para o crachá</div></div>
+      <div class="sec-body">
+        <label class="fl">Foto <span class="req">*</span></label>
+        <div class="photo-area" id="photo-area" onclick="document.getElementById('photo-file').click()">
+          <img class="photo-preview" id="photo-preview" src="" alt="Prévia da foto">
+          <div class="photo-icon" id="photo-icon">📷</div>
+          <div class="photo-title" id="photo-title">Clique para selecionar ou tirar uma foto</div>
+          <div class="photo-sub" id="photo-sub">Selecionar do dispositivo ou <span>usar câmera</span></div>
+          <input type="file" id="photo-file" accept="image/jpeg,image/png,image/webp" onchange="onPhotoSelect(event)" capture="user">
+        </div>
+        <div class="photo-guide">
+          <div class="photo-guide-row"><strong>📐 Enquadramento obrigatório:</strong></div>
+          <div class="photo-guide-row">✔ A foto deve enquadrar da cabeça até um pouco abaixo do peito</div>
+          <div class="photo-guide-row">✔ Não corte a cabeça — deixe espaço acima do topo da cabeça</div>
+          <div class="photo-guide-row">✔ Fundo neutro e liso (branco, cinza ou bege)</div>
+          <div class="photo-guide-row">✔ Rosto centralizado, olhando para a câmera</div>
+          <div class="photo-guide-row">✔ Boa iluminação, sem sombras no rosto</div>
+        </div>
+        <div class="photo-actions" id="photo-actions" style="display:none">
+          <button class="btn-sm" onclick="document.getElementById('photo-file').click();event.stopPropagation()">↺ Trocar foto</button>
+          <button class="btn-sm" onclick="removePhoto();event.stopPropagation()">✕ Remover</button>
+        </div>
+        <div class="err-msg" id="err-photo">Foto obrigatória.</div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <div class="spacer"></div>
+      <button class="btn-nav next" onclick="goStep(2)">Próximo: Perfil DISC →</button>
+    </div>
+  </div><!-- /step1 -->
+
+  <!-- ETAPA 2: DISC -->
+  <div id="step2" style="display:none">
+
+    <div class="disc-intro">
+      <div style="font-size:14px;font-weight:600;color:var(--mv-text);margin-bottom:.4rem">Autoconhecimento comportamental — DISC</div>
+      <div style="font-size:13px;color:var(--mv-text-muted);line-height:1.6;margin-bottom:1rem">Para cada situação abaixo, escolha a opção que mais descreve seu comportamento habitual. Não há resposta certa ou errada — responda instintivamente.</div>
+      <div class="disc-legend">
+        <div class="disc-leg-item d"><div class="disc-dot d">D</div><div class="disc-leg-text"><strong style="color:var(--disc-d)">Dominância</strong><span>Direto, decidido, orientado a resultado</span></div></div>
+        <div class="disc-leg-item i"><div class="disc-dot i">I</div><div class="disc-leg-text"><strong style="color:var(--disc-i)">Influência</strong><span>Entusiasta, comunicativo, mobilizador</span></div></div>
+        <div class="disc-leg-item s"><div class="disc-dot s">S</div><div class="disc-leg-text"><strong style="color:var(--disc-s)">Estabilidade</strong><span>Colaborativo, paciente, construtor de consenso</span></div></div>
+        <div class="disc-leg-item c"><div class="disc-dot c">C</div><div class="disc-leg-text"><strong style="color:var(--disc-c)">Conformidade</strong><span>Analítico, criterioso, orientado a processos</span></div></div>
+      </div>
+    </div>
+
+    <div class="disc-progress"><div class="disc-prog-fill" id="disc-prog" style="width:0%"></div></div>
+
+    <div id="disc-questions"></div>
+
+    <div class="nav-row">
+      <button class="btn-nav back" onclick="goStep(1)">← Voltar</button>
+      <div class="spacer"></div>
+      <button class="btn-nav next" id="btn-disc-next" onclick="goStep(3)" disabled>Próximo: Diagnóstico →</button>
+    </div>
+  </div><!-- /step2 -->
+
+  <!-- ETAPA 3: CONEXÃO -->
+  <div id="step3" style="display:none">
+
+    <div class="form-section">
+      <div class="sec-hdr"><div class="sec-num">1</div><div class="sec-title">Vínculo com a empresa</div></div>
+      <div class="sec-body">
+
+        <div class="conn-q">
+          <div class="conn-q-text">Há quanto tempo você trabalha na Marvão?</div>
+          <div class="field">
+            <select id="conn-tempo" onchange="updateConnProgress()">
+              <option value="">— Selecione —</option>
+              <option value="menos6m">Menos de 6 meses</option>
+              <option value="6m1a">Entre 6 meses e 1 ano</option>
+              <option value="1a3a">Entre 1 e 3 anos</option>
+              <option value="3a5a">Entre 3 e 5 anos</option>
+              <option value="mais5a">Mais de 5 anos</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="conn-q" style="margin-top:1rem">
+          <div class="conn-q-text">Em uma escala de 1 a 5, como você avalia seu senso de pertencimento à Marvão?</div>
+          <div class="conn-q-sub">1 = muito baixo · 5 = muito alto</div>
+          <div class="scale-row" id="scale-pertencimento">
+            <button class="scale-btn" onclick="selectScale('pertencimento',1)">1</button>
+            <button class="scale-btn" onclick="selectScale('pertencimento',2)">2</button>
+            <button class="scale-btn" onclick="selectScale('pertencimento',3)">3</button>
+            <button class="scale-btn" onclick="selectScale('pertencimento',4)">4</button>
+            <button class="scale-btn" onclick="selectScale('pertencimento',5)">5</button>
+          </div>
+        </div>
+
+        <div class="conn-q" style="margin-top:1rem">
+          <div class="conn-q-text">Como você avalia a clareza sobre seu papel e responsabilidades na empresa?</div>
+          <div class="conn-q-sub">1 = muito confuso · 5 = muito claro</div>
+          <div class="scale-row" id="scale-clareza">
+            <button class="scale-btn" onclick="selectScale('clareza',1)">1</button>
+            <button class="scale-btn" onclick="selectScale('clareza',2)">2</button>
+            <button class="scale-btn" onclick="selectScale('clareza',3)">3</button>
+            <button class="scale-btn" onclick="selectScale('clareza',4)">4</button>
+            <button class="scale-btn" onclick="selectScale('clareza',5)">5</button>
+          </div>
+        </div>
+
+        <div class="conn-q" style="margin-top:1rem">
+          <div class="conn-q-text">Como você avalia a comunicação interna com sua liderança direta?</div>
+          <div class="conn-q-sub">1 = muito deficiente · 5 = excelente</div>
+          <div class="scale-row" id="scale-comunicacao">
+            <button class="scale-btn" onclick="selectScale('comunicacao',1)">1</button>
+            <button class="scale-btn" onclick="selectScale('comunicacao',2)">2</button>
+            <button class="scale-btn" onclick="selectScale('comunicacao',3)">3</button>
+            <button class="scale-btn" onclick="selectScale('comunicacao',4)">4</button>
+            <button class="scale-btn" onclick="selectScale('comunicacao',5)">5</button>
+          </div>
+        </div>
+
+        <div class="conn-q" style="margin-top:1rem">
+          <div class="conn-q-text">Como você avalia o alinhamento entre sua atuação e as metas da empresa?</div>
+          <div class="conn-q-sub">1 = desalinhado · 5 = totalmente alinhado</div>
+          <div class="scale-row" id="scale-alinhamento">
+            <button class="scale-btn" onclick="selectScale('alinhamento',1)">1</button>
+            <button class="scale-btn" onclick="selectScale('alinhamento',2)">2</button>
+            <button class="scale-btn" onclick="selectScale('alinhamento',3)">3</button>
+            <button class="scale-btn" onclick="selectScale('alinhamento',4)">4</button>
+            <button class="scale-btn" onclick="selectScale('alinhamento',5)">5</button>
+          </div>
+        </div>
+
+        <div class="conn-q" style="margin-top:1rem">
+          <div class="conn-q-text">O que você mais valoriza na cultura da Marvão?</div>
+          <div class="conn-q-sub">Responda livremente. Sua perspectiva é importante para a liderança.</div>
+          <textarea class="open-q" id="conn-cultura" placeholder="Escreva aqui..." onkeyup="updateConnProgress()" rows="3"></textarea>
+        </div>
+
+        <div class="conn-q" style="margin-top:1rem">
+          <div class="conn-q-text">O que você acredita que a Marvão precisa fazer diferente para crescer?</div>
+          <div class="conn-q-sub">Seja honesto — suas respostas são tratadas com respeito e confidencialidade.</div>
+          <textarea class="open-q" id="conn-melhoria" placeholder="Escreva aqui..." onkeyup="updateConnProgress()" rows="3"></textarea>
+        </div>
+
+        <div class="conn-q" style="margin-top:1rem">
+          <div class="conn-q-text">Existe algo que gostaria de comunicar à nova liderança antes do evento?</div>
+          <div class="conn-q-sub">Campo opcional.</div>
+          <textarea class="open-q" id="conn-lideranca" placeholder="Opcional..." rows="2"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-nav back" onclick="goStep(2)">← Voltar</button>
+      <div class="spacer"></div>
+      <button class="btn-nav next" id="btn-conn-next" onclick="goStep(4)">Próximo: Consentimento →</button>
+    </div>
+  </div><!-- /step3 -->
+
+  <!-- ETAPA 4: LGPD + SUBMIT -->
+  <div id="step4" style="display:none">
+
+    <div class="lgpd-box">
+      <div class="lgpd-hdr"><i class="ti ti-shield-check" style="color:#7a9fbe;font-size:16px"></i><span>Proteção de dados — LGPD (Lei nº 13.709/2018)</span></div>
+      <div class="lgpd-scroll">
+        <p><strong>1. Controlador dos dados</strong><br>Os dados pessoais coletados são de responsabilidade da <strong>Marvão Serviços</strong>, CNPJ [00.000.000/0001-00], doravante denominada "Controladora".</p>
+        <p><strong>2. Finalidade e base legal</strong><br>Os dados coletados — nome completo, CPF, e-mail, telefone, imagem fotográfica, cargo, respostas comportamentais e percepções organizacionais — têm como finalidade a confecção de crachá de identificação institucional, organização do evento de onboarding e diagnóstico interno de liderança. A base legal é o <strong>legítimo interesse</strong> (art. 7º, IX, LGPD) e o <strong>consentimento expresso</strong> do titular (art. 7º, I, LGPD).</p>
+        <p><strong>3. Dados coletados</strong><br>Nome · CPF · E-mail · Telefone · Imagem fotográfica · Cargo · Área · Perfil comportamental DISC · Respostas ao diagnóstico de conexão e percepção organizacional.</p>
+        <p><strong>4. Compartilhamento</strong><br>Os dados serão compartilhados exclusivamente com o fornecedor gráfico responsável pela produção dos materiais, vinculado por contrato de sigilo. As respostas de diagnóstico são de acesso restrito à liderança executiva e ao consultor responsável pela mentoria.</p>
+        <p><strong>5. Prazo de retenção</strong><br>Os dados de identificação e imagem serão mantidos por até 90 dias após o evento. As respostas de diagnóstico poderão ser retidas por até 12 meses para fins de acompanhamento do processo de transição, salvo solicitação de exclusão pelo titular.</p>
+        <p><strong>6. Direitos do titular</strong><br>Nos termos dos artigos 17 a 22 da LGPD, o titular possui o direito de confirmar, acessar, corrigir, anonimizar, bloquear ou eliminar seus dados, e de revogar o consentimento a qualquer tempo. Solicitações: <strong>[dpo@marvao.com.br]</strong>.</p>
+        <p><strong>7. Segurança</strong><br>A Controladora adota medidas técnicas e administrativas aptas a proteger os dados pessoais de acessos não autorizados e de situações acidentais ou ilícitas de destruição, perda, alteração ou comunicação.</p>
+      </div>
+      <div class="consent-row" onclick="toggleCb('cb1')">
+        <input type="checkbox" id="cb1" onclick="event.stopPropagation();toggleCb('cb1')">
+        <label for="cb1">Li, compreendi e <strong>consinto com o tratamento dos meus dados pessoais</strong>, incluindo imagem fotográfica e respostas ao diagnóstico, conforme a Lei nº 13.709/2018 (LGPD).</label>
+      </div>
+      <div class="consent-row" onclick="toggleCb('cb2')">
+        <input type="checkbox" id="cb2" onclick="event.stopPropagation();toggleCb('cb2')">
+        <label for="cb2"><strong>Declaro que os dados informados são verdadeiros e revisados</strong>, ciente de que serão usados em documento físico institucional da empresa.</label>
+      </div>
+      <div class="lgpd-pad"></div>
+    </div>
+
+    <div class="alert-box" style="margin-top:1.2rem;border-left-color:#c9a84c">
+      <i class="ti ti-eye alert-icon"></i>
+      <div class="alert-text"><strong>Última revisão:</strong> verifique nome, grafia do cargo e qualidade da foto antes de enviar. Alterações após o envio podem não ser incorporadas a tempo da produção.</div>
+    </div>
+
+    <div class="nav-row" style="flex-direction:column;align-items:stretch;gap:8px">
+      <button class="btn-nav back" onclick="goStep(3)" style="align-self:flex-start">← Voltar</button>
+      <button class="btn-nav next" onclick="handleSubmit()" style="text-align:center">Confirmar cadastro e enviar</button>
+      <div style="font-size:11px;color:var(--mv-text-muted);text-align:center;line-height:1.5">Formulário confidencial — uso interno Marvão Serviços · 2026</div>
+    </div>
+  </div><!-- /step4 -->
+
+  <!-- SUCESSO -->
+  <div id="step-success" style="display:none">
+    <div class="success-wrap">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Cadastro recebido</div>
+      <div class="success-sub">Seus dados foram registrados com sucesso e serão utilizados na produção do seu crachá institucional.</div>
+      <div class="success-card" id="success-card"></div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="footer-logo">MARVÃO</div>
+    <div class="footer-conf">Confidencial · Uso interno · 2026</div>
+  </div>
+
+</div>
+</div><!-- /tab-form -->
+
+<!-- ============ ADMIN ============ -->
+<div class="tab-panel" id="tab-admin">
+<div class="admin-wrap">
+
+  <div class="admin-hdr">
+    <h1>Painel do administrador</h1>
+    <div style="display:flex;gap:8px">
+      <button class="btn-sm" onclick="fetch('/api/respondents').then(r=>r.json()).then(d=>{respondents=d;renderAdmin();})">↻ Atualizar</button>
+      <button class="btn-sm gold" onclick="exportCSV()">↓ Exportar CSV</button>
+    </div>
+  </div>
+
+  <div class="admin-stats" id="admin-stats">
+    <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-lbl">Cadastros</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-conselho">0</div><div class="stat-lbl">Conselho</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-diretoria">0</div><div class="stat-lbl">Diretoria</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-gerencia">0</div><div class="stat-lbl">Gerência</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-coordenacao">0</div><div class="stat-lbl">Coordenação</div></div>
+  </div>
+
+  <div class="filter-bar">
+    <span style="font-size:12px;color:var(--mv-text-muted);font-weight:500">Filtrar:</span>
+    <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="setFilter('conselho',this)">Conselho</button>
+    <button class="filter-btn" onclick="setFilter('diretoria',this)">Diretoria</button>
+    <button class="filter-btn" onclick="setFilter('gerencia',this)">Gerência</button>
+    <button class="filter-btn" onclick="setFilter('coordenacao',this)">Coordenação</button>
+    <div style="flex:1"></div>
+    <input type="text" class="search-input" placeholder="Buscar nome..." oninput="renderAdmin(this.value)" style="width:160px">
+  </div>
+
+  <div class="cards-grid" id="cards-grid"></div>
+  <div id="admin-empty" class="admin-empty" style="display:none">
+    <div class="empty-state-icon">📋</div>
+    <div style="font-size:15px;font-weight:500;color:var(--mv-text-muted);margin-bottom:.3rem">Nenhum cadastro ainda</div>
+    <div style="font-size:13px;color:var(--mv-text-muted)">Quando colaboradores preencherem o formulário, os registros aparecerão aqui.</div>
+  </div>
+
+</div>
+</div><!-- /tab-admin -->
+
+<!-- MODAL SENHA -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-logo">MARVÃO</div>
+    <div class="auth-title">Área restrita</div>
+    <div class="auth-sub">O painel do administrador é de acesso exclusivo à liderança. Insira a senha para continuar.</div>
+    <div class="auth-field">
+      <input class="auth-input" type="password" id="auth-input" placeholder="Senha de acesso" onkeydown="if(event.key==='Enter')authSubmit()">
+      <button class="auth-toggle" onclick="toggleAuthVis()" title="Mostrar/ocultar senha" id="auth-eye">👁</button>
+    </div>
+    <div class="auth-err-msg" id="auth-err">Senha incorreta. Tente novamente.</div>
+    <button class="auth-btn" onclick="authSubmit()">Entrar no painel</button>
+    <button class="auth-cancel" onclick="closeAuth()">Cancelar</button>
+    <div class="auth-attempts" id="auth-attempts"></div>
+  </div>
+</div>
+
+<!-- MODAL DETALHE -->
+<div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+const CONSELHO = ['luiz','yara','tiago'];
+const DIRETORIA = ['kennedy','marcio','márcio','raphael'];
+const DEPTO_META = {
+  conselho:{label:'Conselho Deliberativo',cls:'d-conselho'},
+  diretoria:{label:'Diretoria Executiva',cls:'d-diretoria'},
+  gerencia:{label:'Gerência',cls:'d-gerencia'},
+  coordenacao:{label:'Coordenação',cls:'d-coordenacao'},
+  outro:{label:'Outro',cls:'d-outro'}
+};
+const DISC_COLORS = {D:'#c0392b',I:'#c9a84c',S:'#1a7a46',C:'#185fa5'};
+const DISC_LABELS = {D:'Dominância',I:'Influência',S:'Estabilidade',C:'Conformidade'};
+const DISC_DESC = {
+  D:'Você tem perfil Dominante: direto, orientado a resultados e decisivo. Tende a agir rapidamente e aceita desafios de frente. Em equipe, lidera pelo ritmo e pela assertividade.',
+  I:'Você tem perfil de Influência: entusiasta, comunicativo e mobilizador. Constrói relações com facilidade e inspira as pessoas ao redor. Em equipe, energiza e engaja.',
+  S:'Você tem perfil de Estabilidade: paciente, colaborativo e consistente. Valoriza harmonia e confiança. Em equipe, sustenta o ritmo e garante que ninguém fique para trás.',
+  C:'Você tem perfil de Conformidade: analítico, criterioso e metódico. Preza por qualidade e precisão. Em equipe, evita erros e garante que os processos funcionem.'
+};
+
+const DISC_QS = [
+  {q:'Diante de um problema urgente, você costuma:', opts:[{t:'D',l:'Agir imediatamente e decidir no calor do momento'},{t:'I',l:'Convocar o time e mobilizar energia coletiva'},{t:'S',l:'Ouvir todas as partes antes de se posicionar'},{t:'C',l:'Analisar os dados disponíveis antes de qualquer passo'}]},
+  {q:'Em reuniões, as pessoas costumam perceber você como:', opts:[{t:'D',l:'Quem define o ritmo e pressiona por decisões'},{t:'I',l:'Quem anima o ambiente e facilita a conversa'},{t:'S',l:'Quem escuta ativamente e busca consenso'},{t:'C',l:'Quem questiona detalhes e exige precisão'}]},
+  {q:'Quando você recebe uma crítica ao seu trabalho, sua reação inicial é:', opts:[{t:'D',l:'Rebater e defender seu ponto de vista'},{t:'I',l:'Tentar entender a perspectiva do outro e manter o relacionamento'},{t:'S',l:'Aceitar a crítica com paciência e refletir sobre ela'},{t:'C',l:'Verificar se a crítica está tecnicamente embasada'}]},
+  {q:'Na hora de tomar uma decisão importante, você prioriza:', opts:[{t:'D',l:'Velocidade e resultado — o melhor movimento agora'},{t:'I',l:'O impacto nas pessoas e na relação com o time'},{t:'S',l:'Estabilidade — evitar mudanças abruptas desnecessárias'},{t:'C',l:'Precisão — ter dados e critérios bem estabelecidos'}]},
+  {q:'Você se sente mais produtivo quando:', opts:[{t:'D',l:'Tem autonomia total para executar e decidir'},{t:'I',l:'Trabalha em contato frequente com pessoas'},{t:'S',l:'O ambiente é previsível e as rotinas estão claras'},{t:'C',l:'Tem tempo para planejar e revisar o trabalho com cuidado'}]},
+  {q:'Quando um colega comete um erro que afeta você, você tende a:', opts:[{t:'D',l:'Confrontar diretamente e exigir resolução imediata'},{t:'I',l:'Conversar com leveza para não comprometer o relacionamento'},{t:'S',l:'Absorver o impacto e resolver por conta própria'},{t:'C',l:'Registrar o ocorrido e buscar corrigir o processo'}]},
+  {q:'Ao iniciar um projeto novo, seu primeiro instinto é:', opts:[{t:'D',l:'Definir metas claras e já começar a executar'},{t:'I',l:'Apresentar a ideia para o time e gerar engajamento'},{t:'S',l:'Entender como encaixa na rotina e no que já funciona'},{t:'C',l:'Mapear todos os riscos e definir um plano detalhado'}]},
+  {q:'Para você, uma boa liderança é aquela que:', opts:[{t:'D',l:'Impõe direção, cobra resultados e não tolera mediocridade'},{t:'I',l:'Inspira, motiva e cria uma cultura positiva'},{t:'S',l:'Apoia o time, cria estabilidade e mantém a coesão'},{t:'C',l:'Organiza, estabelece processos claros e garante qualidade'}]}
+];
+
+let photoData = null;
+let discAnswers = {};
+let scaleAnswers = {};
+let currentFilter = 'todos';
+let respondents = [];
+
+const ADMIN_HASH = '7f6f3b2e4d1a9c8e5b0f2a3d6e1c4b7a9f8e2d5c0b3a6f1e4d7c2b5a8f3e6d';
+let adminUnlocked = false;
+let authAttempts = 0;
+const AUTH_MAX = 5;
+
+function hashStr(s){
+  let h=0;
+  for(let i=0;i<s.length;i++){h=Math.imul(31,h)+s.charCodeAt(i)|0;}
+  return Math.abs(h).toString(16).padStart(8,'0').repeat(8).slice(0,64);
+}
+
+async function switchTab(t){
+  if(t==='admin' && !adminUnlocked){
+    openAuth();
+    return;
+  }
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['form','admin'][i]===t));
+  document.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active',['tab-form','tab-admin'][i]==='tab-'+t));
+  if(t==='admin') {
+    try {
+      const res = await fetch('/api/respondents');
+      respondents = await res.json();
+    } catch(e) { respondents = []; }
+    renderAdmin();
+  }
+}
+
+function openAuth(){
+  document.getElementById('auth-overlay').classList.add('open');
+  document.getElementById('auth-input').value='';
+  document.getElementById('auth-err').style.display='none';
+  document.getElementById('auth-attempts').textContent='';
+  setTimeout(()=>document.getElementById('auth-input').focus(),80);
+}
+
+function closeAuth(){
+  document.getElementById('auth-overlay').classList.remove('open');
+}
+
+function toggleAuthVis(){
+  const inp=document.getElementById('auth-input');
+  const btn=document.getElementById('auth-eye');
+  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
+  else{inp.type='password';btn.textContent='👁';}
+  inp.focus();
+}
+
+function authSubmit(){
+  if(authAttempts>=AUTH_MAX){
+    document.getElementById('auth-err').textContent='Número máximo de tentativas atingido. Recarregue a página.';
+    document.getElementById('auth-err').style.display='block';
+    document.getElementById('auth-input').disabled=true;
+    return;
+  }
+  const val=document.getElementById('auth-input').value;
+  const correct = (val==='axis@2026');
+  if(correct){
+    adminUnlocked=true;
+    authAttempts=0;
+    closeAuth();
+    document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===1));
+    document.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active',i===1));
+    fetch('/api/respondents').then(r=>r.json()).then(data=>{ respondents=data; renderAdmin(); }).catch(()=>renderAdmin());
+  } else {
+    authAttempts++;
+    const inp=document.getElementById('auth-input');
+    inp.classList.add('auth-err');
+    setTimeout(()=>inp.classList.remove('auth-err'),600);
+    const rem=AUTH_MAX-authAttempts;
+    const errEl=document.getElementById('auth-err');
+    errEl.textContent='Senha incorreta. Tente novamente.';
+    errEl.style.display='block';
+    document.getElementById('auth-attempts').textContent=rem>0?`${rem} tentativa${rem===1?'':'s'} restante${rem===1?'':'s'}`:'Última tentativa usada.';
+    inp.value='';
+    inp.focus();
+  }
+}
+
+function goStep(n){
+  if(n===2 && !validateStep1()) return;
+  if(n===3 && !validateStep2()) return;
+  [1,2,3,4,'success'].forEach(s=>{
+    const el = document.getElementById('step'+(s==='success'?'-success':s));
+    if(el) el.style.display = (s===n)?'block':'none';
+  });
+  updateStepIndicator(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateStepIndicator(n){
+  const labels = ['Dados pessoais','Perfil DISC','Conexão','Consentimento'];
+  [1,2,3,4].forEach(i=>{
+    const dot = document.getElementById('sd'+i);
+    const lbl = document.getElementById('sl'+i);
+    if(i<n){dot.className='step-dot done';dot.textContent='✓';}
+    else if(i===n){dot.className='step-dot active';dot.textContent=i;}
+    else{dot.className='step-dot';dot.textContent=i;}
+    lbl.className='step-label'+(i===n?' active':'');
+    lbl.textContent = labels[i-1];
+  });
+  const pct = n==='success'?100:Math.round(((n-1)/4)*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-label').textContent = n==='success'?'Concluído':'Etapa '+n+' de 4';
+}
+
+// STEP 1 VALIDATION
+function validateStep1(){
+  let ok=true;
+  const nome=document.getElementById('nome');
+  if(!nome.value.trim()){nome.classList.add('err');document.getElementById('err-nome').style.display='block';ok=false;}else{nome.classList.remove('err');document.getElementById('err-nome').style.display='none';}
+  const cpf=document.getElementById('cpf');
+  if(cpf.value.replace(/\D/g,'').length!==11){cpf.classList.add('err');document.getElementById('err-cpf').style.display='block';ok=false;}else{cpf.classList.remove('err');document.getElementById('err-cpf').style.display='none';}
+  const email=document.getElementById('email');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)){email.classList.add('err');document.getElementById('err-email').style.display='block';ok=false;}else{email.classList.remove('err');document.getElementById('err-email').style.display='none';}
+  const tel=document.getElementById('tel');
+  if(tel.value.replace(/\D/g,'').length<10){tel.classList.add('err');document.getElementById('err-tel').style.display='block';ok=false;}else{tel.classList.remove('err');document.getElementById('err-tel').style.display='none';}
+  const cargo=document.getElementById('cargo');
+  if(!cargo.value.trim()){cargo.classList.add('err');document.getElementById('err-cargo').style.display='block';ok=false;}else{cargo.classList.remove('err');document.getElementById('err-cargo').style.display='none';}
+  const hier=document.getElementById('hierarquia');
+  if(!hier.value){hier.classList.add('err');document.getElementById('err-hier').style.display='block';ok=false;}else{hier.classList.remove('err');document.getElementById('err-hier').style.display='none';}
+  if(!photoData){document.getElementById('err-photo').style.display='block';ok=false;}else{document.getElementById('err-photo').style.display='none';}
+  if(!ok) return false;
+  renderDISC();
+  return true;
+}
+
+function validateStep2(){
+  const total = DISC_QS.length;
+  const answered = Object.keys(discAnswers).length;
+  if(answered<total){alert('Por favor, responda todas as '+total+' perguntas antes de avançar.');return false;}
+  return true;
+}
+
+// NOME / HIERARQUIA
+function onNomeInput(el){
+  const words = el.value.trim().toLowerCase().replace(/[^a-záéíóúàâêôãõüç\s]/gi,'').split(/\s+/).filter(Boolean);
+  const isC = words.some(w => CONSELHO.includes(w));
+  const isD = words.some(w => DIRETORIA.includes(w));
+  document.getElementById('opt-conselho').disabled = !isC;
+  document.getElementById('opt-diretoria').disabled = !isD;
+  const hier = document.getElementById('hierarquia');
+  if(hier.value==='conselho'&&!isC) hier.value='';
+  if(hier.value==='diretoria'&&!isD) hier.value='';
+  const notice = document.getElementById('locked-notice');
+  notice.style.display = (words.length>0 && !isC && !isD) ? 'flex':'none';
+  onHierChange();
+}
+
+function onHierChange(){
+  const v = document.getElementById('hierarquia').value;
+  const badge = document.getElementById('depto-badge');
+  if(v && DEPTO_META[v]){
+    badge.className='depto-badge visible '+DEPTO_META[v].cls;
+    badge.textContent=DEPTO_META[v].label;
+  } else {
+    badge.className='depto-badge'; badge.textContent='';
+  }
+}
+
+// MASKS
+function maskCPF(el){
+  let v=el.value.replace(/\D/g,'');
+  if(v.length>11) v=v.slice(0,11);
+  if(v.length>9) v=v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/,'$1.$2.$3-$4');
+  else if(v.length>6) v=v.replace(/(\d{3})(\d{3})(\d+)/,'$1.$2.$3');
+  else if(v.length>3) v=v.replace(/(\d{3})(\d+)/,'$1.$2');
+  el.value=v;
+}
+function maskTel(el){
+  let v=el.value.replace(/\D/g,'');
+  if(v.length>11) v=v.slice(0,11);
+  if(v.length>10) v=v.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3');
+  else if(v.length>6) v=v.replace(/(\d{2})(\d{4})(\d+)/,'($1) $2-$3');
+  else if(v.length>2) v=v.replace(/(\d{2})(\d+)/,'($1) $2');
+  el.value=v;
+}
+function validateEmail(){
+  const el=document.getElementById('email');
+  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
+  el.classList.toggle('err',!ok&&el.value.length>0);
+  document.getElementById('err-email').style.display=(!ok&&el.value.length>0)?'block':'none';
+}
+
+// PHOTO
+function onPhotoSelect(e){
+  const file=e.target.files[0]; if(!file) return;
+  if(file.size>5*1024*1024){alert('A imagem deve ter no máximo 5 MB.');return;}
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    photoData=ev.target.result;
+    const prev=document.getElementById('photo-preview');
+    prev.src=photoData; prev.style.display='block';
+    document.getElementById('photo-icon').style.display='none';
+    document.getElementById('photo-title').textContent=file.name;
+    document.getElementById('photo-sub').textContent=(file.size/1024).toFixed(0)+' KB';
+    document.getElementById('photo-area').classList.add('has-photo');
+    document.getElementById('photo-actions').style.display='flex';
+    document.getElementById('err-photo').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+function removePhoto(){
+  photoData=null;
+  const prev=document.getElementById('photo-preview');
+  prev.style.display='none'; prev.src='';
+  document.getElementById('photo-icon').style.display='block';
+  document.getElementById('photo-title').textContent='Clique para selecionar ou tirar uma foto';
+  document.getElementById('photo-sub').innerHTML='Selecionar do dispositivo ou <span>usar câmera</span>';
+  document.getElementById('photo-area').classList.remove('has-photo');
+  document.getElementById('photo-actions').style.display='none';
+  document.getElementById('photo-file').value='';
+}
+
+// DISC
+function renderDISC(){
+  const container=document.getElementById('disc-questions');
+  container.innerHTML='';
+  DISC_QS.forEach((q,qi)=>{
+    const div=document.createElement('div');
+    div.className='disc-q';
+    div.innerHTML=`<div class="disc-q-num">Situação ${qi+1} de ${DISC_QS.length}</div>
+    <div class="disc-q-text">${q.q}</div>
+    <div class="disc-opts" id="disc-opts-${qi}">`+
+    q.opts.map((o,oi)=>`<div class="disc-opt" id="disc-opt-${qi}-${oi}" onclick="selectDisc(${qi},${oi},'${o.t}')">
+      <div class="disc-opt-bullet" id="disc-bullet-${qi}-${oi}"></div>
+      <div class="disc-opt-text">${o.l}</div>
+    </div>`).join('')+
+    `</div>`;
+    container.appendChild(div);
+  });
+  updateDiscProgress();
+}
+
+function selectDisc(qi,oi,type){
+  discAnswers[qi]=type;
+  const opts=document.getElementById('disc-opts-'+qi);
+  opts.querySelectorAll('.disc-opt').forEach((o,i)=>{
+    o.className='disc-opt'+(i===oi?' selected':'');
+  });
+  updateDiscProgress();
+}
+function updateDiscProgress(){
+  const answered=Object.keys(discAnswers).length;
+  const pct=Math.round((answered/DISC_QS.length)*100);
+  document.getElementById('disc-prog').style.width=pct+'%';
+  document.getElementById('btn-disc-next').disabled=(answered<DISC_QS.length);
+}
+
+function calcDISC(){
+  const counts={D:0,I:0,S:0,C:0};
+  Object.values(discAnswers).forEach(t=>counts[t]++);
+  const total=DISC_QS.length;
+  const pcts={};
+  Object.keys(counts).forEach(k=>pcts[k]=Math.round((counts[k]/total)*100));
+  const dominant=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  return {counts,pcts,dominant};
+}
+
+// ESCALA CONEXÃO
+function selectScale(id,val){
+  scaleAnswers[id]=val;
+  const row=document.getElementById('scale-'+id);
+  row.querySelectorAll('.scale-btn').forEach((b,i)=>b.classList.toggle('sel',i+1===val));
+  updateConnProgress();
+}
+function updateConnProgress(){
+  const scales=['pertencimento','clareza','comunicacao','alinhamento'];
+  const done=scales.filter(s=>scaleAnswers[s]).length;
+  const tempo=document.getElementById('conn-tempo').value;
+  const hasObrig=(done===4 && tempo);
+  document.getElementById('btn-conn-next').disabled=!hasObrig;
+}
+
+// LGPD TOGGLE
+function toggleCb(id){
+  const cb=document.getElementById(id);
+  cb.checked=!cb.checked;
+}
+
+// SUBMIT
+function handleSubmit(){
+  if(!document.getElementById('cb1').checked||!document.getElementById('cb2').checked){
+    alert('É necessário aceitar os dois termos de consentimento para prosseguir.');return;
+  }
+  const disc=calcDISC();
+  const r={
+    id: Date.now(),
+    nome: document.getElementById('nome').value.trim(),
+    cpf: document.getElementById('cpf').value,
+    email: document.getElementById('email').value,
+    tel: document.getElementById('tel').value,
+    cargo: document.getElementById('cargo').value.trim(),
+    hierarquia: document.getElementById('hierarquia').value,
+    photo: photoData,
+    disc,
+    conexao:{
+      tempo: document.getElementById('conn-tempo').value,
+      pertencimento: scaleAnswers.pertencimento||0,
+      clareza: scaleAnswers.clareza||0,
+      comunicacao: scaleAnswers.comunicacao||0,
+      alinhamento: scaleAnswers.alinhamento||0,
+      cultura: document.getElementById('conn-cultura').value.trim(),
+      melhoria: document.getElementById('conn-melhoria').value.trim(),
+      lideranca: document.getElementById('conn-lideranca').value.trim()
+    },
+    ts: new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})
+  };
+  // Send to server
+  setSubmitting(true);
+  try {
+    const res = await fetch('/api/respondents', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(r)
+    });
+    if (!res.ok) throw new Error('Erro ao salvar');
+  } catch(e) {
+    alert('Erro ao enviar. Tente novamente.'); setSubmitting(false); return;
+  }
+
+  document.getElementById('step4').style.display='none';
+  document.getElementById('step-success').style.display='block';
+
+  const depto=DEPTO_META[r.hierarquia]||{label:'Não informado',cls:'d-outro'};
+  const discD=disc.dominant;
+  document.getElementById('success-card').innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      ${r.photo?`<img src="${r.photo}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:center top;border:2px solid var(--mv-gold)">`:`<div style="width:52px;height:52px;border-radius:50%;background:var(--mv-green);color:#fff;font-size:18px;font-weight:600;display:flex;align-items:center;justify-content:center">${r.nome[0]}</div>`}
+      <div><div style="font-weight:600;font-size:14px;color:var(--mv-text)">${r.nome}</div><div style="font-size:12px;color:var(--mv-text-muted)">${r.cargo}</div></div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span class="rc-depto-badge ${depto.cls}">${depto.label}</span>
+      <span class="disc-pill ${discD.toLowerCase()}">${discD} — ${DISC_LABELS[discD]}</span>
+    </div>
+  `;
+  updateStepIndicator('success');
+}
+
+// ADMIN
+function renderAdmin(search=''){
+  const filter=currentFilter;
+  const grid=document.getElementById('cards-grid');
+  const empty=document.getElementById('admin-empty');
+  const stats={total:0,conselho:0,diretoria:0,gerencia:0,coordenacao:0};
+  respondents.forEach(r=>{
+    stats.total++;
+    if(stats[r.hierarquia]!==undefined) stats[r.hierarquia]++;
+  });
+  document.getElementById('stat-total').textContent=stats.total;
+  document.getElementById('stat-conselho').textContent=stats.conselho;
+  document.getElementById('stat-diretoria').textContent=stats.diretoria;
+  document.getElementById('stat-gerencia').textContent=stats.gerencia;
+  document.getElementById('stat-coordenacao').textContent=stats.coordenacao;
+
+  let filtered=respondents.filter(r=>{
+    if(filter!=='todos'&&r.hierarquia!==filter) return false;
+    if(search&&!r.nome.toLowerCase().includes(search.toLowerCase())) return false;
+    return true;
+  });
+
+  if(!filtered.length){
+    grid.innerHTML=''; empty.style.display='block'; return;
+  }
+  empty.style.display='none';
+
+  grid.innerHTML=filtered.map(r=>{
+    const d=DEPTO_META[r.hierarquia]||{label:'Outro',cls:'d-outro'};
+    const disc=r.disc;
+    const top2=Object.entries(disc.pcts).sort((a,b)=>b[1]-a[1]).slice(0,2);
+    const avgConn=Math.round((r.conexao.pertencimento+r.conexao.clareza+r.conexao.comunicacao+r.conexao.alinhamento)/4);
+    const stars=Array.from({length:5},(_,i)=>`<div class="conn-star ${i<avgConn?'fill':'empty'}"></div>`).join('');
+    return `<div class="respondent-card">
+      <div class="rc-top">
+        ${r.photo?`<img class="rc-photo" src="${r.photo}" alt="">`:`<div class="rc-avatar">${r.nome[0]}</div>`}
+        <div class="rc-info">
+          <div class="rc-name">${r.nome}</div>
+          <div class="rc-cargo">${r.cargo}</div>
+          <span class="rc-depto-badge ${d.cls}">${d.label}</span>
+        </div>
+      </div>
+      <div class="rc-body">
+        <div class="rc-disc">
+          <span class="rc-disc-lbl">DISC:</span>
+          ${top2.map(([k,v])=>`<span class="disc-pill ${k.toLowerCase()}">${k} ${v}%</span>`).join('')}
+        </div>
+        <div class="rc-conexao">
+          <span class="rc-conexao-lbl">Conexão:</span>
+          <div class="conn-stars">${stars}</div>
+          <span style="font-size:10px;color:var(--mv-text-muted);margin-left:4px">${avgConn}/5</span>
+        </div>
+        <div class="rc-contact">
+          <span>${r.email}</span>
+          <span>${r.tel}</span>
+        </div>
+      </div>
+      <div class="rc-actions">
+        <button class="btn-sm" onclick="openModal(${r.id})" style="flex:1;justify-content:center">Ver detalhe</button>
+        ${r.photo?`<button class="btn-sm" onclick="downloadPhoto(${r.id})" title="Baixar foto">↓ Foto</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setFilter(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdmin(document.querySelector('.search-input').value);
+}
+
+function downloadPhoto(id){
+  const r=respondents.find(x=>x.id===id);
+  if(!r||!r.photo) return;
+  const a=document.createElement('a');
+  a.href=r.photo;
+  const ext=r.photo.split(';')[0].split('/')[1]||'jpg';
+  a.download=r.nome.replace(/\s+/g,'_')+'_cracha.'+ext;
+  a.click();
+}
+
+function openModal(id){
+  const r=respondents.find(x=>x.id===id);
+  if(!r) return;
+  const disc=r.disc;
+  const depto=DEPTO_META[r.hierarquia]||{label:'Outro',cls:'d-outro'};
+  const tempLabels={menos6m:'Menos de 6 meses',  '6m1a':'6 meses a 1 ano','1a3a':'1 a 3 anos','3a5a':'3 a 5 anos',mais5a:'Mais de 5 anos'};
+  const connScales=[
+    {label:'Pertencimento',val:r.conexao.pertencimento},
+    {label:'Clareza de papel',val:r.conexao.clareza},
+    {label:'Comunicação',val:r.conexao.comunicacao},
+    {label:'Alinhamento',val:r.conexao.alinhamento}
+  ];
+  const avgConn=Math.round((r.conexao.pertencimento+r.conexao.clareza+r.conexao.comunicacao+r.conexao.alinhamento)/4);
+
+  const discBars=Object.entries(disc.pcts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+      <span style="width:14px;font-size:11px;font-weight:700;color:${DISC_COLORS[k]}">${k}</span>
+      <div style="flex:1;height:10px;background:rgba(0,0,0,.08);border-radius:5px;overflow:hidden">
+        <div style="height:100%;width:${v}%;background:${DISC_COLORS[k]};border-radius:5px"></div>
+      </div>
+      <span style="font-size:11px;font-weight:600;color:#555;width:32px;text-align:right">${v}%</span>
+    </div>`).join('');
+
+  const connBars=connScales.map(c=>`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="font-size:11px;color:#666;width:110px;flex-shrink:0">${c.label}</span>
+      <div style="flex:1;height:8px;background:rgba(0,0,0,.08);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${c.val*20}%;background:var(--mv-green);border-radius:4px"></div>
+      </div>
+      <span style="font-size:11px;font-weight:600;color:#555;width:20px;text-align:right">${c.val}/5</span>
+    </div>`).join('');
+
+  document.getElementById('modal-content').innerHTML=`
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2>${r.nome}</h2>
+    ${r.photo?`<img class="modal-photo" src="${r.photo}" alt="">`:`<div class="modal-avatar">${r.nome[0]}</div>`}
+    ${r.photo?`<div style="text-align:center;margin-bottom:1rem"><button class="btn-sm gold" onclick="downloadPhoto(${r.id})">↓ Baixar foto do crachá</button></div>`:''}
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem">
+      <div class="modal-field"><label>E-mail</label><div class="val">${r.email}</div></div>
+      <div class="modal-field"><label>Telefone</label><div class="val">${r.tel}</div></div>
+      <div class="modal-field"><label>CPF</label><div class="val">${r.cpf}</div></div>
+      <div class="modal-field"><label>Cadastro em</label><div class="val">${r.ts}</div></div>
+    </div>
+    <div class="modal-field" style="margin-bottom:.5rem"><label>Cargo</label><div class="val">${r.cargo}</div></div>
+    <div style="margin-bottom:1rem"><span class="rc-depto-badge ${depto.cls}">${depto.label}</span></div>
+
+    <div style="border-top:.5px solid rgba(26,61,43,.1);padding-top:1rem;margin-bottom:1rem">
+      <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mv-text-muted);margin-bottom:.6rem">Perfil DISC</div>
+      ${discBars}
+      <div style="margin-top:.6rem;padding:10px;border-radius:7px;background:${DISC_COLORS[disc.dominant]}18;border:1px solid ${DISC_COLORS[disc.dominant]}44;font-size:12.5px;line-height:1.6;color:var(--mv-text)">
+        <strong style="color:${DISC_COLORS[disc.dominant]}">Perfil dominante: ${disc.dominant} — ${DISC_LABELS[disc.dominant]}</strong><br>${DISC_DESC[disc.dominant]}
+      </div>
+    </div>
+
+    <div style="border-top:.5px solid rgba(26,61,43,.1);padding-top:1rem;margin-bottom:1rem">
+      <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mv-text-muted);margin-bottom:.6rem">Diagnóstico de conexão — média ${avgConn}/5</div>
+      <div style="font-size:12px;color:var(--mv-text-muted);margin-bottom:.6rem">Tempo na empresa: <strong style="color:var(--mv-text)">${tempLabels[r.conexao.tempo]||r.conexao.tempo}</strong></div>
+      ${connBars}
+    </div>
+
+    ${r.conexao.cultura?`<div class="modal-field" style="margin-bottom:.75rem"><label>O que valoriza na cultura</label><div class="val" style="font-size:13px;line-height:1.6;background:var(--mv-cream);padding:8px 10px;border-radius:6px;margin-top:4px">${r.conexao.cultura}</div></div>`:''}
+    ${r.conexao.melhoria?`<div class="modal-field" style="margin-bottom:.75rem"><label>O que pode melhorar</label><div class="val" style="font-size:13px;line-height:1.6;background:var(--mv-cream);padding:8px 10px;border-radius:6px;margin-top:4px">${r.conexao.melhoria}</div></div>`:''}
+    ${r.conexao.lideranca?`<div class="modal-field"><label>Mensagem à liderança</label><div class="val" style="font-size:13px;line-height:1.6;background:#fef4dc;padding:8px 10px;border-radius:6px;margin-top:4px;border-left:3px solid var(--mv-gold)">${r.conexao.lideranca}</div></div>`:''}
+  `;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal-bg'))
+    document.getElementById('modal-bg').classList.remove('open');
+}
+
+function exportCSV(){
+  if(!respondents.length){alert('Nenhum cadastro para exportar.');return;}
+  const heads=['Nome','CPF','E-mail','Telefone','Cargo','Hierarquia','DISC Dominante','DISC D%','DISC I%','DISC S%','DISC C%','Tempo empresa','Pertencimento','Clareza','Comunicação','Alinhamento','Cultura','Melhoria','Msg Liderança','Data'];
+  const rows=respondents.map(r=>[
+    r.nome, r.cpf, r.email, r.tel, r.cargo, r.hierarquia,
+    r.disc.dominant, r.disc.pcts.D, r.disc.pcts.I, r.disc.pcts.S, r.disc.pcts.C,
+    r.conexao.tempo, r.conexao.pertencimento, r.conexao.clareza, r.conexao.comunicacao, r.conexao.alinhamento,
+    '"'+(r.conexao.cultura||'').replace(/"/g,'""')+'"',
+    '"'+(r.conexao.melhoria||'').replace(/"/g,'""')+'"',
+    '"'+(r.conexao.lideranca||'').replace(/"/g,'""')+'"',
+    r.ts
+  ]);
+  const csv=[heads,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='marvao_onboarding_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+}
+
+renderAdmin();
+</script>
+</body>
+</html>
