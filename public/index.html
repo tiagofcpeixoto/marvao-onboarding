@@ -682,7 +682,7 @@ input[type=file]{display:none}
 </div><!-- /tab-admin -->
 
 <!-- MODAL SENHA -->
-<div class="auth-overlay" id="auth-overlay">
+<div class="auth-overlay" id="auth-overlay" style="display:none">
   <div class="auth-box">
     <div class="auth-logo">MARVÃO</div>
     <div class="auth-title">Área restrita</div>
@@ -767,7 +767,8 @@ async function switchTab(t){
 }
 
 function openAuth(){
-  document.getElementById('auth-overlay').classList.add('open');
+  const overlay = document.getElementById('auth-overlay');
+  overlay.style.display='flex';
   document.getElementById('auth-input').value='';
   document.getElementById('auth-err').style.display='none';
   document.getElementById('auth-attempts').textContent='';
@@ -775,7 +776,7 @@ function openAuth(){
 }
 
 function closeAuth(){
-  document.getElementById('auth-overlay').classList.remove('open');
+  document.getElementById('auth-overlay').style.display='none';
 }
 
 function toggleAuthVis(){
@@ -1019,10 +1020,12 @@ function toggleCb(id){
 }
 
 // SUBMIT
-function handleSubmit(){
+async function handleSubmit(){
   if(!document.getElementById('cb1').checked||!document.getElementById('cb2').checked){
     alert('É necessário aceitar os dois termos de consentimento para prosseguir.');return;
   }
+  const btn=document.querySelector('#step4 .btn-nav.next');
+  if(btn){btn.disabled=true;btn.textContent='Enviando...';}
   const disc=calcDISC();
   const r={
     id: Date.now(),
@@ -1046,8 +1049,6 @@ function handleSubmit(){
     },
     ts: new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})
   };
-  // Send to server
-  setSubmitting(true);
   try {
     const res = await fetch('/api/respondents', {
       method: 'POST',
@@ -1056,7 +1057,9 @@ function handleSubmit(){
     });
     if (!res.ok) throw new Error('Erro ao salvar');
   } catch(e) {
-    alert('Erro ao enviar. Tente novamente.'); setSubmitting(false); return;
+    alert('Erro ao enviar. Tente novamente.');
+    if(btn){btn.disabled=false;btn.textContent='Confirmar cadastro e enviar';}
+    return;
   }
 
   document.getElementById('step4').style.display='none';
